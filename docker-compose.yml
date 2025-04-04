@@ -5,9 +5,9 @@ services:
     image: postgres:15-alpine
     container_name: leads-db  # Nome explícito
     environment:
-      POSTGRES_DB: leads_db
-      POSTGRES_USER: aguia
-      POSTGRES_PASSWORD: aguia@1234
+      POSTGRES_DB: ${BD_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
     ports:
       - "5433:5432"
     volumes:
@@ -19,26 +19,26 @@ services:
       retries: 5
     networks:
       - leads-net
-    restart: unless-stopped  # Politica de reinício
+    restart: unless-stopped
 
   leads-api:
     build: .
-    container_name: leads-app  # Nome explícito
+    container_name: leads-app
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://172.18.0.2:5432/leads_db  # Usando o nome do serviço 'leads-db'
-      SPRING_DATASOURCE_USERNAME: aguia
-      SPRING_DATASOURCE_PASSWORD: aguia@1234
-      SPRING_PROFILES_ACTIVE: prod  # Perfil ativo
-      JAVA_OPTS: "-Xmx512m -Xms256m"  # Config JVM
+      SPRING_DATASOURCE_URL: DB_URL=${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
+      SPRING_PROFILES_ACTIVE: prod
+      JAVA_OPTS: "-Xmx512m -Xms256m"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - leads-net
     restart: unless-stopped
-    logging:  # Controle de logs
+    logging:
       driver: "json-file"
       options:
         max-size: "10m"
@@ -51,4 +51,4 @@ volumes:
 networks:
   leads-net:
     driver: bridge
-    name: leads-network  # Nome explícito
+    name: leads-network

@@ -1,33 +1,116 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# === Build ===
+/target/
+build/
+out/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# === Java ===
+*.class
+*.jar
+*.war
+*.ear
+*.nar
 
-### IntelliJ IDEA ###
-.idea
+# === Maven ===
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+!/.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+
+# === Gradle ===
+.gradle/
+!gradle-wrapper.jar
+build.gradle.lockfile
+gradle-app.setting
+
+# === IDEs ===
+# IntelliJ
+.idea/
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+tmp/
+.metadata/
 
-### VS Code ###
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
 .vscode/
+.history/
+
+# === SOs ===
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*~
+
+# === Logs e Temporários ===
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
+*.orig
+*.rej
+nohup.out
+
+# === Segurança ===
+.env
+.env.*
+*.keystore
+*.jks
+*.pem
+*.crt
+*.key
+*.p12
+*.db
+*.sqlite
+*.sqlite3
+
+# === Docker ===
+docker-compose.override.yml
+*.pid
+
+# === Testes ===
+test-output/
+surefire-reports/
+jacoco.exec
+
+# === Outros ===
+node_modules/
+*.ctxt
+*.lock
+*.sql
+*.csv
+*.tsv
+*.7z
+*.gz
+*.tar
+*.tgz
+*.zip
+*.rar
+
+# Git
+*.patch
+*.un~
