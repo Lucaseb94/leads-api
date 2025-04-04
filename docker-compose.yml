@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: leads-db  # Nome explícito
+    environment:
+      POSTGRES_DB: leads_db
+      POSTGRES_USER: aguia
+      POSTGRES_PASSWORD: aguia@1234
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aguia -d leads_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - leads-net
+    restart: unless-stopped  # Politica de reinício
+
+  leads-api:
+    build: .
+    container_name: leads-app  # Nome explícito
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://172.18.0.2:5432/leads_db  # Usando o nome do serviço 'leads-db'
+      SPRING_DATASOURCE_USERNAME: aguia
+      SPRING_DATASOURCE_PASSWORD: aguia@1234
+      SPRING_PROFILES_ACTIVE: prod  # Perfil ativo
+      JAVA_OPTS: "-Xmx512m -Xms256m"  # Config JVM
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - leads-net
+    restart: unless-stopped
+    logging:  # Controle de logs
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  leads-net:
+    driver: bridge
+    name: leads-network  # Nome explícito
