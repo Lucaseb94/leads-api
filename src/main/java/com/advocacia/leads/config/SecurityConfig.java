@@ -47,7 +47,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/leads").permitAll()  // Permitir acesso a /api/leads sem autenticação
+                        .requestMatchers("/api/auth/**", "/api/leads", "/error").permitAll()  // Permitir acesso a /api/leads sem autenticação
                         .anyRequest().authenticated()  // Qualquer outra requisição exige autenticação
                 )
                 .sessionManagement(sess -> sess

@@ -1,5 +1,5 @@
 package com.advocacia.leads.security;
-
+import com.advocacia.leads.security.EnvConfig;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
@@ -15,7 +16,8 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "YmFzZTY0ZW5jb2RlZGtleXNlY3JldDEyMzQ1Njc4OTA=";
+    private static final String SECRET_KEY = System.getenv().getOrDefault("JWT_SECRET", "7vZwG4vrc3vZlHxxaBFEcYlMkqg8IlN9oLeEwhOhYcE=");
+    private static final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

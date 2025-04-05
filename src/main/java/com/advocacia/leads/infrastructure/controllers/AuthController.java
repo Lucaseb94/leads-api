@@ -25,7 +25,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", produces = "application/json")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getSenha())
@@ -34,6 +34,7 @@ public class AuthController {
         String jwt = jwtUtil.generateToken(authentication);
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody UserRegistrationRequest request) {
