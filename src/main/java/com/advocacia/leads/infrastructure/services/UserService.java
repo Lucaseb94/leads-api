@@ -1,5 +1,6 @@
 package com.advocacia.leads.infrastructure.services;
 
+import com.advocacia.leads.domain.AreaDireito;
 import com.advocacia.leads.domain.Role;
 import com.advocacia.leads.domain.Usuario;
 import com.advocacia.leads.dto.RoleChangeDTO;
@@ -32,11 +33,12 @@ public class UserService {
         if (usuarioRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("E-mail já está em uso.");
         }
+        AreaDireito area = AreaDireito.valueOf(especializacao);
 
         Usuario novoUsuario = Usuario.builder()
                 .email(email)
                 .senha(passwordEncoder.encode(senha))
-                .especializacao(especializacao)
+                .especializacao(area)
                 .ativo(true)
                 .build();
 
