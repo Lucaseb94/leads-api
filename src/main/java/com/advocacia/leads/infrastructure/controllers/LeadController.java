@@ -5,7 +5,9 @@ import com.advocacia.leads.domain.AreaDireito;
 import com.advocacia.leads.infrastructure.repositories.LeadRepository;
 import com.advocacia.leads.infrastructure.services.LeadService;
 import jakarta.validation.Valid;
+import com.advocacia.leads.dto.LeadDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +35,11 @@ public class LeadController {
     public List<Lead> listarLeadsPorArea(@PathVariable String area) {
         AreaDireito areaEnum = AreaDireito.valueOf(area.toUpperCase());
         return leadService.listarPorArea(areaEnum);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> atualizarLead(@RequestBody LeadDTO leadDTO) {
+        leadService.atualizar(leadDTO);
+        return ResponseEntity.ok("Lead atualizado com sucesso.");
     }
 }

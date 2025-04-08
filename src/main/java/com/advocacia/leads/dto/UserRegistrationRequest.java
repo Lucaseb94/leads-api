@@ -2,8 +2,17 @@ package com.advocacia.leads.dto;
 
 public class UserRegistrationRequest {
     private String email;
+    private String nome;
     private String senha;
     private String especializacao; // Adicione o campo
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     // Getters e Setters
     public String getEmail() {

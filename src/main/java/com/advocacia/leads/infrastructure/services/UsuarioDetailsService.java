@@ -31,6 +31,14 @@ public class UsuarioDetailsService implements UserDetailsService {
                 .map(role -> new SimpleGrantedAuthority(role.getNome()))
                 .collect(Collectors.toList());
 
-        return new User(usuario.getEmail(), usuario.getSenha(), authorities);
+        return new User(
+                usuario.getEmail(),
+                usuario.getSenha(),
+                usuario.isAtivo(),   // <- Impede login se usuário estiver desativado
+                true,                // accountNonExpired
+                true,                // credentialsNonExpired
+                true,                // accountNonLocked
+                authorities
+        );
     }
 }

@@ -27,6 +27,10 @@ public class Usuario {
     // Campo especialização, usado em UserService e RegistrationController
     private String especializacao;
 
+    // Campo para indicar se a conta está ativa
+    @Builder.Default
+    private boolean ativo = true;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_role",
