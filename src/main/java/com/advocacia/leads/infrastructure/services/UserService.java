@@ -22,6 +22,9 @@ public class UserService {
 
     @Transactional
     public void registerUser(String email, String senha, String especializacaoStr) {
+        if (usuarioRepository.findByEmail(email).isPresent()){
+            throw new IllegalArgumentException("Email já esta em uso.");
+        }
         Usuario novoUsuario = new Usuario();
         novoUsuario.setEmail(email);
         novoUsuario.setSenha(passwordEncoder.encode(senha)); // Criptografa a senha

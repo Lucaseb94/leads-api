@@ -1,5 +1,6 @@
 package com.advocacia.leads.config;
 
+import com.advocacia.leads.security.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,18 +44,26 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint entryPoint) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(entryPoint)  // <- Aqui está o tratamento seguro
+                )
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/leads", "/error").permitAll()  // Permitir acesso a /api/leads sem autenticação
-                        .anyRequest().authenticated()  // Qualquer outra requisição exige autenticação
+                        .requestMatchers("/api/auth/**", "/api/leads", "/error").permitAll()
+                        .anyRequest().authenticated()
                 )
+
                 .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Política sem sessão
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 }
