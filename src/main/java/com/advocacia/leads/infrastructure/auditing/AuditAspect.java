@@ -44,9 +44,10 @@ public class AuditAspect {
                 .parametros(args != null ? Arrays.toString(args) : "")
                 .resultado(result != null ? result.toString() : "void")
                 .mensagem(mensagem)
-                .dataExecucao(endTime)
+                .dataHora(endTime)
                 .usuario("usuario_exemplo")
                 .build();
+
         auditLogRepository.save(auditLog);
 
         log.info("[AUDIT] Duração do método '{}': {} ms", methodName, java.time.Duration.between(startTime, endTime).toMillis());

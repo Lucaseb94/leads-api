@@ -16,76 +16,24 @@ public class AuditLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String metodo;
+    private String usuario;     // Quem realizou a ação
 
-    @Column(length = 1000)
-    private String parametros;
+    private String acao;        // Qual ação (CREATE, UPDATE, DELETE, etc.)
 
-    public String getResultado() {
-        return resultado;
-    }
+    private String entidade;    // Qual entidade (ex: "Lead")
 
-    public void setResultado(String resultado) {
-        this.resultado = resultado;
-    }
+    private String entidadeId;  // ID do registro da entidade
 
-    public String getUsuario() {
-        return usuario;
-    }
+    private String detalhes;    // Detalhes da ação
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
+    private String metodo;      // Nome do método chamado
 
-    public LocalDateTime getDataExecucao() {
-        return dataExecucao;
-    }
+    private String parametros;  // Parâmetros passados para o método
 
-    public void setDataExecucao(LocalDateTime dataExecucao) {
-        this.dataExecucao = dataExecucao;
-    }
+    private String resultado;   // Resultado retornado pela operação
 
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
-    public String getParametros() {
-        return parametros;
-    }
-
-    public void setParametros(String parametros) {
-        this.parametros = parametros;
-    }
-
-    public String getMetodo() {
-        return metodo;
-    }
-
-    public void setMetodo(String metodo) {
-        this.metodo = metodo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Column(length = 1000)
-    private String resultado;
-
-    @Column(length = 1000)
-    private String mensagem;
+    private String mensagem;    // Mensagem de sucesso ou erro
 
     @Column(nullable = false)
-    private LocalDateTime dataExecucao;
-
-    private String usuario;
+    private LocalDateTime dataHora;  // Data e hora da ação
 }

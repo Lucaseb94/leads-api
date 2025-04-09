@@ -26,6 +26,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     long countByAtivoTrue();
     long countByAtivoFalse();
 
+
     // Para distribuição de leads com enum AreaDireito
     @Query("SELECT u FROM Usuario u WHERE u.ativo = true AND u.especializacao = :especializacao AND LOWER(u.regiao) = LOWER(:regiao)")
     List<Usuario> findByEspecializacaoAndRegiao(@Param("especializacao") AreaDireito especializacao,
