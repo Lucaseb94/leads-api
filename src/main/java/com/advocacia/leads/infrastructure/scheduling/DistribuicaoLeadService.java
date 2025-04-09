@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -70,18 +71,75 @@ public class DistribuicaoLeadService {
 
 
     private String gerarCorpo(List<Lead> leads, String nomeAdvogado) {
+        if (nomeAdvogado == null || nomeAdvogado.isBlank()) {
+            nomeAdvogado = "Dr";
+        }
+
         StringBuilder sb = new StringBuilder();
-        sb.append("Olá, ").append(nomeAdvogado).append("!\n\n")
-                .append("Segue a lista de leads compatíveis:\n\n");
+
+        // Início do HTML
+        sb.append("<html>");
+        sb.append("<head>");
+        sb.append("<style>");
+        // Exemplo simples de CSS; customize conforme sua necessidade
+        sb.append("body { font-family: Arial, sans-serif; }");
+        sb.append("h2 { color: #2E86C1; }");
+        sb.append("table { width: 100%; border-collapse: collapse; }");
+        sb.append("th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }");
+        sb.append("tr:hover { background-color: #f5f5f5; }");
+        sb.append("</style>");
+        sb.append("</head>");
+        sb.append("<body>");
+
+        // Saudação e título
+        sb.append("<h2>Olá, ").append(nomeAdvogado).append("!</h2>");
+        sb.append("<p>Segue a lista de leads compatíveis:</p>");
+
+        // Estrutura de tabela para os leads
+        sb.append("<table>");
+        sb.append("<thead>");
+        sb.append("<tr>");
+        sb.append("<th>Nome</th>");
+        sb.append("<th>Email</th>");
+        sb.append("<th>Telefone</th>");
+        sb.append("<th>Área</th>");
+        sb.append("<th>Região</th>");
+        sb.append("<th>Criado em</th>");
+        sb.append("</tr>");
+        sb.append("</thead>");
+        sb.append("<tbody>");
+
+        // Formatação de data (usando LocalDateTime e DateTimeFormatter)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         for (Lead l : leads) {
-            sb.append("- Nome: ").append(l.getNome()).append("\n")
-                    .append("  Email: ").append(l.getEmail()).append("\n")
-                    .append("  Telefone: ").append(l.getTelefone()).append("\n")
-                    .append("  Área: ").append(l.getAreaInteresse()).append("\n")
-                    .append("  Região: ").append(l.getRegiao()).append("\n")
-                    .append("  Criado em: ").append(l.getDataRegistro()).append("\n\n");
+            sb.append("<tr>");
+            sb.append("<td>").append(l.getNome() != null ? l.getNome() : "Não informado").append("</td>");
+            sb.append("<td>").append(l.getEmail() != null ? l.getEmail() : "Não informado").append("</td>");
+            sb.append("<td>").append(l.getTelefone() != null ? l.getTelefone() : "Não informado").append("</td>");
+            // Note que l.getAreaInteresse() é um enum; o método toString() dele normalmente retorna o nome do valor.
+            sb.append("<td>").append(l.getAreaInteresse() != null ? l.getAreaInteresse().toString() : "Não informado").append("</td>");
+            sb.append("<td>").append(l.getRegiao() != null ? l.getRegiao() : "Não informado").append("</td>");
+            sb.append("<td>");
+            if (l.getDataRegistro() != null) {
+                sb.append(l.getDataRegistro().format(formatter));
+            } else {
+                sb.append("Data desconhecida");
+            }
+            sb.append("</td>");
+            sb.append("</tr>");
         }
+
+        sb.append("</tbody>");
+        sb.append("</table>");
+
+        // Rodapé do email
+        sb.append("<p>Atenciosamente,<br/>Equipe Leads API</p>");
+
+        // Fim do HTML
+        sb.append("</body>");
+        sb.append("</html>");
+
         return sb.toString();
     }
 }
