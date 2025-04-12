@@ -9,6 +9,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -23,10 +24,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
 
-        Map<String, String> errorResponse = Map.of(
-                "error", "Email ou senha incorretos"
-        );
+        Map<String, Object> data = new HashMap<>();
+        data.put("mensagem", "Acesso não autorizado. Faça login para continuar.");
 
-        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+        response.getWriter().write(objectMapper.writeValueAsString(data));
     }
 }

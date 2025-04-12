@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -15,6 +18,13 @@ import java.util.Arrays;
 public class AuditAspect {
 
     private final AuditLogRepository auditLogRepository;
+
+    private String truncate(String value) {
+        int MAX_LENGTH = 150;
+        if (value == null) return null;
+        return value.length() > MAX_LENGTH ? value.substring(0, MAX_LENGTH) + "..." : value;
+    }
+
 
     @Pointcut("execution(public * com.advocacia.leads.infrastructure.services.*.*(..))")
     public void auditServiceMethods() {}
@@ -39,18 +49,28 @@ public class AuditAspect {
         }
         LocalDateTime endTime = LocalDateTime.now();
 
+        String usuarioLogado = "Anonimo"; // Valor padrão
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+            usuarioLogado = auth.getName();
+        }
+
         AuditLog auditLog = AuditLog.builder()
                 .metodo(methodName)
-                .parametros(args != null ? Arrays.toString(args) : "")
-                .resultado(result != null ? result.toString() : "void")
-                .mensagem(mensagem)
+                .parametros(truncate(args != null ? Arrays.toString(args) : ""))
+                .resultado(truncate(result != null ? result.toString() : "void"))
+                .mensagem(truncate(mensagem))
                 .dataHora(endTime)
-                .usuario("usuario_exemplo")
+                .usuario(usuarioLogado)
                 .build();
+
 
         auditLogRepository.save(auditLog);
 
         log.info("[AUDIT] Duração do método '{}': {} ms", methodName, java.time.Duration.between(startTime, endTime).toMillis());
         return result;
     }
+
 }

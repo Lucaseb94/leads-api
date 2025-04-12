@@ -71,7 +71,7 @@ public class LeadService {
         leadRepository.save(lead);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Lead> listarPorArea(AreaDireito area) {
         return leadRepository.findAll().stream()
                 .filter(lead -> lead.getAreaInteresse() == area)

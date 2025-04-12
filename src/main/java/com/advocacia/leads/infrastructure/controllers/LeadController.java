@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -29,10 +30,18 @@ public class LeadController {
     }
 
     @GetMapping("/{area}")
-    @PreAuthorize("hasAuthority('ROLE_ADVOGADO')")
-    public List<Lead> listarLeadsPorArea(@PathVariable String area) {
-        AreaDireito areaEnum = AreaDireito.valueOf(area.toUpperCase());
-        return leadService.listarPorArea(areaEnum);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> listarLeadsPorArea(@PathVariable String area) {
+        // Log explícito para confirmar o valor recebido:
+        System.out.println("Valor recebido para a área: " + area);
+
+        try {
+            AreaDireito areaEnum = AreaDireito.valueOf(area.toUpperCase());
+            return ResponseEntity.ok(leadService.listarPorArea(areaEnum));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body("Área inválida: " + area + ". Valores válidos: " + Arrays.toString(AreaDireito.values()));
+        }
     }
 
     @PutMapping

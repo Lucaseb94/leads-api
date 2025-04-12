@@ -24,7 +24,8 @@ public class AuditLog {
 
     private String entidadeId;  // ID do registro da entidade
 
-    private String detalhes;    // Detalhes da ação
+    @Column(name = "detalhes", columnDefinition = "TEXT")
+    private String detalhes;
 
     private String metodo;      // Nome do método chamado
 
@@ -34,6 +35,6 @@ public class AuditLog {
 
     private String mensagem;    // Mensagem de sucesso ou erro
 
-    @Column(nullable = false)
-    private LocalDateTime dataHora;  // Data e hora da ação
+    @Column(name = "data_execucao", nullable = false)
+    private LocalDateTime dataHora;
 }

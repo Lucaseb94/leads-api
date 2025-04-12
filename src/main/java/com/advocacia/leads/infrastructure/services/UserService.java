@@ -4,6 +4,7 @@ import com.advocacia.leads.domain.AreaDireito;
 import com.advocacia.leads.domain.Role;
 import com.advocacia.leads.domain.Usuario;
 import com.advocacia.leads.dto.RoleChangeDTO;
+import com.advocacia.leads.dto.UserRegistrationRequest;
 import com.advocacia.leads.dto.UsuarioDTO;
 import com.advocacia.leads.infrastructure.repositories.RoleRepository;
 import com.advocacia.leads.infrastructure.repositories.UsuarioRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,22 +30,23 @@ public class UserService {
     }
 
     @Transactional
-    public void registerUser(String email, String senha, String especializacao, String requestEspecializacao) {
-        // Verifica se o e-mail já está cadastrado
-        if (usuarioRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("E-mail já está em uso.");
+    public void registerUser(UserRegistrationRequest request) {
+        Optional<Usuario> existingUser = usuarioRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("Email já cadastrado.");
         }
-        AreaDireito area = AreaDireito.valueOf(especializacao);
 
         Usuario novoUsuario = Usuario.builder()
-                .email(email)
-                .senha(passwordEncoder.encode(senha))
-                .especializacao(area)
+                .nome(request.getNome())
+                .email(request.getEmail())
+                .senha(passwordEncoder.encode(request.getSenha()))
+                .especializacao(AreaDireito.valueOf(request.getEspecializacao().toUpperCase()))
                 .ativo(true)
                 .build();
 
         usuarioRepository.save(novoUsuario);
     }
+
 
     @Transactional(readOnly = true)
     public List<UsuarioDTO> listarTodos() {
