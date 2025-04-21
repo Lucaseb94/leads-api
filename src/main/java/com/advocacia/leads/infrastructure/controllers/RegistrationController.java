@@ -40,6 +40,7 @@ public class RegistrationController {
         // Cria um novo usuário e codifica a senha com BCrypt
         Usuario usuario = new Usuario();
         usuario.setEmail(request.getEmail());
+        usuario.setRegiao(request.getRegiao());
         usuario.setSenha(passwordEncoder.encode(request.getSenha()));
 
         // Busca a role "ROLE_USER" no banco de dados e adiciona ao usuário

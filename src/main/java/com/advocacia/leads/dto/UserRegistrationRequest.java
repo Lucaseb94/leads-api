@@ -4,6 +4,7 @@ public class UserRegistrationRequest {
     private String email;
     private String nome;
     private String senha;
+    private String regiao;
     private String especializacao; // Adicione o campo
 
     public String getNome() {
@@ -12,6 +13,14 @@ public class UserRegistrationRequest {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getRegiao() {
+        return regiao;
+    }
+
+    public void setRegiao(String regiao) {
+        this.regiao = regiao;
     }
 
     // Getters e Setters

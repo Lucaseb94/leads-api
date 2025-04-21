@@ -9,6 +9,11 @@ out/
 *.war
 *.ear
 *.nar
+HELP.md
+
+# Ignorar arquivos de backup
+application.properties.bak
+
 
 # === Maven ===
 .mvn/

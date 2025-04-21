@@ -6,5 +6,11 @@ public enum AreaDireito {
     TRABALHISTA,
     EMPRESARIAL,
     FAMILIA,
+    IMOBILIARIO,
+    CONSUMIDOR,
+    TRIBUTARIO,
+    AMBIENTAL,
+    ADMINISTRATIVO,
+    ELETORAL,
     OUTROS
 }
