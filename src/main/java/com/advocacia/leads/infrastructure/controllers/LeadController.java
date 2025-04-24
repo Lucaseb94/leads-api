@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "https://lucaseb94.github.io")
 @RequestMapping("/api/leads")
 public class LeadController {
 
