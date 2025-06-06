@@ -228,4 +228,4 @@ Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
-*Desenvolvido com ❤️ por Lucas*
+*Desenvolvido por Lucas Miranda*
