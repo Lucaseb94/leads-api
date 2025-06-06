@@ -1,5 +1,4 @@
 package com.advocacia.leads.infrastructure.controllers;
-
 import com.advocacia.leads.dto.JwtResponse;
 import com.advocacia.leads.dto.LoginRequest;
 import com.advocacia.leads.dto.UserRegistrationRequest;
@@ -25,7 +24,7 @@ public class AuthController {
     private final UserService userService;
     private final ResetPasswordService resetPasswordService;
 
-    // Injeção via construtor (melhor prática)
+    // Injeção via construtor
     public AuthController(
             AuthenticationManager authManager,
             JwtUtil jwtUtil,
